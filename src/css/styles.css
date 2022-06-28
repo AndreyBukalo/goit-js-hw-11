@@ -51,3 +51,10 @@ cursor: pointer;
     height: 36px;
     width: 40px;
 }
+
+.gallery {
+    display: flex;
+    flex-direction: column
+
+ 
+}
