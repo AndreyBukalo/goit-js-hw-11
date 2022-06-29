@@ -10,6 +10,7 @@ const refs = {
   form: document.querySelector('.search-form'),
   searchBtn: document.querySelector('.input-button'),
   gallery: document.querySelector('.gallery'),
+  upButton: document.querySelector('.akeconsa-udaneles'),
 };
 
 let formInput = '';
@@ -24,6 +25,7 @@ function fetchResolved(event) {
   event.preventDefault();
   page = 1;
   refs.gallery.innerHTML = '';
+   refs.upButton.hidden = false;
   formInput = refs.form.elements.searchQuery.value.trim();
   if (formInput === '') {
     emptyInput();
@@ -32,6 +34,8 @@ function fetchResolved(event) {
   fetchPictures(formInput, page, perPage)
     .then(image => {
       if (image.totalHits === 0) {
+        refs.moreBtn.hidden = true;
+       
         noImagesFound();
       } else {
         renderGallery(image.hits);
@@ -41,7 +45,10 @@ function fetchResolved(event) {
         alertImagesFound(image);
       }
     })
-    .catch(err => console.log(err.statusText));
+    .catch(err => console.log(err.statusText)).finally(() => {
+      refs.form.reset();
+    });
+  
 }
 
 function onMoreClick() {
@@ -55,7 +62,6 @@ function onMoreClick() {
         refs.moreBtn.hidden = false;
         console.log(image.hits);
         simpleLightBox = new SimpleLightbox('.gallery a').refresh();
-        alertImagesFound(image);
       }
       if (image.hits <= 0) {
         refs.moreBtn.hidden = true;
