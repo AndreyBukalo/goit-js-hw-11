@@ -53,8 +53,17 @@ cursor: pointer;
 }
 
 .gallery {
+    width: 1200px;
     display: flex;
-    flex-direction: column
+    flex-wrap: wrap;
+    justify-content:  center;
+
 
  
 }
+.gallery-item__img {
+    width: 320px;
+    margin-right: 50px;
+   
+}
+

@@ -5,82 +5,65 @@ import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
 
 const refs = {
-    gallery: document.querySelector('.gallery'),
-moreBtn: document.querySelector('.more-button'),
+  gallery: document.querySelector('.gallery'),
+  moreBtn: document.querySelector('.more-button'),
   form: document.querySelector('.search-form'),
   searchBtn: document.querySelector('.input-button'),
   gallery: document.querySelector('.gallery'),
 };
 
-
-let formInput ='';
+let formInput = '';
 let page = 1;
-const perPage = 10;
+const perPage = 40;
 let simpleLightBox;
 
-refs.moreBtn.addEventListener('click', infScroll)
-refs.form.addEventListener('submit', fetchResolved)
-  
+refs.moreBtn.addEventListener('click', onMoreClick);
+refs.form.addEventListener('submit', fetchResolved);
 
 function fetchResolved(event) {
-    event.preventDefault();
-    page = 1;
-    refs.gallery.innerHTML = '';
-    formInput = refs.form.elements.searchQuery.value.trim();
-    if (formInput === '') {
-      emptyInput();
-      return;
-    }
+  event.preventDefault();
+  page = 1;
+  refs.gallery.innerHTML = '';
+  formInput = refs.form.elements.searchQuery.value.trim();
+  if (formInput === '') {
+    emptyInput();
+    return;
+  }
   fetchPictures(formInput, page, perPage)
     .then(image => {
       if (image.totalHits === 0) {
         noImagesFound();
       } else {
-          renderGallery(image.hits);
-          refs.moreBtn.hidden = false;
+        renderGallery(image.hits);
+        refs.moreBtn.hidden = false;
         console.log(image.hits);
         simpleLightBox = new SimpleLightbox('.gallery a').refresh();
         alertImagesFound(image);
       }
-      if (image.totalHits > perPage) {
+    })
+    .catch(err => console.log(err.statusText));
+}
+
+function onMoreClick() {
+  page += 1;
+  fetchPictures(formInput, page, perPage)
+    .then(image => {
+      if (image.totalHits === 0) {
+        noImagesFound();
+      } else {
+        renderGallery(image.hits);
+        refs.moreBtn.hidden = false;
+        console.log(image.hits);
+        simpleLightBox = new SimpleLightbox('.gallery a').refresh();
+        alertImagesFound(image);
+      }
+      if (image.hits <= 0) {
+        refs.moreBtn.hidden = true;
+        endOfPages();
       }
     })
     .catch(err => console.log(err.statusText));
-};
-
-const options = {
-  rootMargin: '200%',
-  threshold: 1.0,
-};
- function infScroll () {
-  const observer = new IntersectionObserver(entries => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            page += 1;
-        fetchPictures(formInput, page, perPage)
-          .then(image => {
-            if (image.totalHits === 0) {
-              noImagesFound();
-            } else {
-                renderGallery(image.hits);
-               
-                console.log(image.hits);
-                
-                 refs.moreBtn.hidden = true;
-              simpleLightBox = new SimpleLightbox('.gallery a').refresh();
-             }
-             })
-          .catch(err => console.log(err.statusText));
-            console.log(entry);
-            
- 
-       
-      }
-    });
-  }, options);
-  observer.observe(document.querySelector('.scroll-guard'));
 }
-
 
 function alertImagesFound(image) {
   Notify.success(`Hooray! We found ${image.totalHits} images.`);
@@ -98,7 +81,6 @@ function noImagesFound() {
   );
 }
 
-function alertEndOfSearch() {
+function endOfPages() {
   Notify.failure("We're sorry, but you've reached the end of search results.");
 }
-

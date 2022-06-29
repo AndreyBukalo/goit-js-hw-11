@@ -8,25 +8,3 @@ export async function fetchPictures(name, page, perPage) {
   );
   return respone.data;
 }
-
-let name = '';
-let page = 1;
-const perPage = 40;
-let simpleLightBox;
-
-export const fetchResolved = () => {
-  fetchPictures(formInput, page, perPage)
-    .then(image => {
-      if (image.totalHits === 0) {
-        noImagesFound();
-      } else {
-        renderGallery(image.hits);
-        console.log(image.hits);
-        simpleLightBox = new SimpleLightbox('.gallery a').refresh();
-        alertImagesFound(image);
-      }
-      if (image.totalHits > perPage) {
-      }
-    })
-    .catch(err => console.log(err.statusText));
-};
