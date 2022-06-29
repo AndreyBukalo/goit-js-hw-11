@@ -3,6 +3,7 @@ const gallery = document.querySelector('.gallery');
 export const renderGallery = image => {
   const markup = image
     .map(image => {
+  
       const {
         largeImageURL,
         webformatURL,
