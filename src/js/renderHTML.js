@@ -1,9 +1,8 @@
 const gallery = document.querySelector('.gallery');
 
-export const renderGallery = image => {
+export async function renderGallery (image)  {
   const markup = image
     .map(image => {
-  
       const {
         largeImageURL,
         webformatURL,
@@ -30,4 +29,4 @@ export const renderGallery = image => {
     .join('');
 
   gallery.insertAdjacentHTML('beforeend', markup);
-}
+};

@@ -28,23 +28,28 @@ function fetchResolved(event) {
    refs.upButton.hidden = false;
   formInput = refs.form.elements.searchQuery.value.trim();
   if (formInput === '') {
-     refs.moreBtn.hidden = true;
+    refs.moreBtn.hidden = true;
     emptyInput();
     return;
-  }
-  fetchPictures(formInput, page, perPage)
+  } 
+ fetchPictures(formInput, page, perPage)
     .then(image => {
-      if (image.totalHits === 0 ) {
+      if (image.totalHits === 0) {
         refs.moreBtn.hidden = true;
-       noImagesFound();
+        noImagesFound();
+      } else if (image.totalHits < 10) {
+        renderGallery(image.hits);
+        refs.moreBtn.hidden = true;
+        return;
       }
-        else {
-           renderGallery(image.hits);
-           refs.moreBtn.hidden = false;
-           console.log(image.hits);
-           simpleLightBox = new SimpleLightbox('.gallery a').refresh();
-          imagesFound(image);
-         }
+      else {
+         renderGallery(image.hits);
+        refs.moreBtn.hidden = false;
+        console.log(image.hits);
+        simpleLightBox = new SimpleLightbox('.gallery a').refresh();
+        imagesFound(image);
+      }
+         
    
     })
     .catch(err => console.log(err.statusText)).finally(() => {
@@ -53,22 +58,27 @@ function fetchResolved(event) {
   
 }
 
- function onMoreClick() {
+ async function onMoreClick() {
   page += 1;
   fetchPictures(formInput, page, perPage)
     .then(image => {
       if (image.totalHits === 0) {
         refs.moreBtn.hidden = true;
         noImagesFound();
-      } else {
+      } else if (image.totalHits < 10) {
+        renderGallery(image.hits);
+        refs.moreBtn.hidden = true;
+        return;
+      }
+      else if (image.hits <= 0) {
+        refs.moreBtn.hidden = true;
+        endOfPages();
+      }
+       else {
         renderGallery(image.hits);
         refs.moreBtn.hidden = false;
         console.log(image.hits);
         simpleLightBox = new SimpleLightbox('.gallery a').refresh();
-      }
-      if (image.hits <= 0) {
-        refs.moreBtn.hidden = true;
-        endOfPages();
       }
     })
     .catch(error => console.log(error));
