@@ -65,7 +65,7 @@ function onMoreClick() {
         console.log(image.hits);
         simpleLightBox = new SimpleLightbox('.gallery a').refresh();
       }
-      if (image.totaHits <= 0) {
+      if (image.hits <= 0) {
         refs.moreBtn.hidden = true;
         endOfPages();
       }
