@@ -41,7 +41,6 @@ function fetchResolved(event) {
         renderGallery(image.hits);
         refs.moreBtn.hidden = true;
         imagesFound(image);
-        return;
       }
       else {
          renderGallery(image.hits);
