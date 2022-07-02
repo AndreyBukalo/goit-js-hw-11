@@ -43,7 +43,7 @@ function fetchResolved(event) {
            refs.moreBtn.hidden = false;
            console.log(image.hits);
            simpleLightBox = new SimpleLightbox('.gallery a').refresh();
-           alertImagesFound(image);
+          imagesFound(image);
          }
    
     })
@@ -53,7 +53,7 @@ function fetchResolved(event) {
   
 }
 
-function onMoreClick() {
+async function onMoreClick() {
   page += 1;
   fetchPictures(formInput, page, perPage)
     .then(image => {
@@ -65,7 +65,7 @@ function onMoreClick() {
         console.log(image.hits);
         simpleLightBox = new SimpleLightbox('.gallery a').refresh();
       }
-      if (image.hits <= 0) {
+      if (image.totaHits <= 0) {
         refs.moreBtn.hidden = true;
         endOfPages();
       }
@@ -73,7 +73,7 @@ function onMoreClick() {
     .catch(err => console.log(err.statusText));
 }
 
-function alertImagesFound(image) {
+function imagesFound(image) {
   Notify.success(`Hooray! We found ${image.totalHits} images.`);
 }
 
