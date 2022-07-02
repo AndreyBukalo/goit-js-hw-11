@@ -53,7 +53,7 @@ function fetchResolved(event) {
   
 }
 
-async function onMoreClick() {
+function onMoreClick() {
   page += 1;
   fetchPictures(formInput, page, perPage)
     .then(image => {
