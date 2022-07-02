@@ -1,6 +1,6 @@
 import { fetchPictures } from './js/fetchPictures';
 import { renderGallery } from './js/renderHTML';
-import { Notify } from 'notiflix/build/notiflix-notify-aio';
+import { Notify } from 'notiflix';
 import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
 
@@ -53,11 +53,12 @@ function fetchResolved(event) {
   
 }
 
-async function onMoreClick() {
+ function onMoreClick() {
   page += 1;
   fetchPictures(formInput, page, perPage)
     .then(image => {
-      if (image.totalHits === 0) {
+      if (image.hits === 0) {
+        refs.moreBtn.hidden = true;
         noImagesFound();
       } else {
         renderGallery(image.hits);
@@ -65,12 +66,12 @@ async function onMoreClick() {
         console.log(image.hits);
         simpleLightBox = new SimpleLightbox('.gallery a').refresh();
       }
-      if (image.totaHits <= 0) {
+      if (image.hits <= 0) {
         refs.moreBtn.hidden = true;
         endOfPages();
       }
     })
-    .catch(err => console.log(err.statusText));
+    .catch(error => console.log(error));
 }
 
 function imagesFound(image) {
