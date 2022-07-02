@@ -57,7 +57,7 @@ function fetchResolved(event) {
   page += 1;
   fetchPictures(formInput, page, perPage)
     .then(image => {
-      if (image.hits === 0) {
+      if (image.totalHits === 0) {
         refs.moreBtn.hidden = true;
         noImagesFound();
       } else {
