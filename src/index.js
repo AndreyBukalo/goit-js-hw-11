@@ -40,6 +40,7 @@ function fetchResolved(event) {
       } else if (image.totalHits < 10) {
         renderGallery(image.hits);
         refs.moreBtn.hidden = true;
+        imagesFound(image);
         return;
       }
       else {
