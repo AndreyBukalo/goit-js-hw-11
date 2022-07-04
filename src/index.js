@@ -37,14 +37,12 @@ function fetchResolved(event) {
       if (image.totalHits === 0) {
         refs.moreBtn.hidden = true;
         noImagesFound();
-      } else if (image.totalHits < 10) {
+      } else if (image.totalHits < perPage) {
         renderGallery(image.hits);
         refs.moreBtn.hidden = true;
         imagesFound(image);
         setTimeout(endOfPages, 500);
-
-      }
-      else {
+      } else {
         renderGallery(image.hits);
         refs.moreBtn.hidden = false;
         console.log(image.hits);
