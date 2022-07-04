@@ -41,9 +41,11 @@ function fetchResolved(event) {
         renderGallery(image.hits);
         refs.moreBtn.hidden = true;
         imagesFound(image);
+        setTimeout(endOfPages, 500);
+
       }
       else {
-         renderGallery(image.hits);
+        renderGallery(image.hits);
         refs.moreBtn.hidden = false;
         console.log(image.hits);
         simpleLightBox = new SimpleLightbox('.gallery a').refresh();
@@ -58,28 +60,21 @@ function fetchResolved(event) {
   
 }
 
- async function onMoreClick() {
+function onMoreClick() {
   page += 1;
   fetchPictures(formInput, page, perPage)
     .then(image => {
-      if (image.totalHits === 0) {
-        refs.moreBtn.hidden = true;
-        noImagesFound();
-      } else if (image.totalHits < 10) {
-        renderGallery(image.hits);
-        refs.moreBtn.hidden = true;
-        return;
-      }
-      else if (image.hits <= 0) {
-        refs.moreBtn.hidden = true;
-        endOfPages();
-      }
-       else {
         renderGallery(image.hits);
         refs.moreBtn.hidden = false;
         console.log(image.hits);
-        simpleLightBox = new SimpleLightbox('.gallery a').refresh();
+      simpleLightBox = new SimpleLightbox('.gallery a').refresh();
+       const totalPages = image.totalHits / perPage;
+
+      if (page > totalPages) {
+        refs.moreBtn.hidden = true;
+        endOfPages();
       }
+      
     })
     .catch(error => console.log(error));
 }
@@ -103,3 +98,5 @@ function noImagesFound() {
 function endOfPages() {
   Notify.failure("We're sorry, but you've reached the end of search results.");
 }
+
+
