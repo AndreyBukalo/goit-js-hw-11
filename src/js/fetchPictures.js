@@ -8,3 +8,6 @@ export async function fetchPictures(name, page, perPage) {
   );
   return respone.data;
 }
+
+
+
