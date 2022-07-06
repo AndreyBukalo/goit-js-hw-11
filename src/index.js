@@ -25,7 +25,8 @@ function fetchResolved(event) {
   event.preventDefault();
   page = 1;
   refs.gallery.innerHTML = '';
-   refs.upButton.hidden = false;
+  refs.upButton.hidden = false;
+  refs.moreBtn.hidden = true;
   formInput = refs.form.elements.searchQuery.value.trim();
   if (formInput === '') {
     refs.moreBtn.hidden = true;
@@ -96,5 +97,4 @@ function noImagesFound() {
 function endOfPages() {
   Notify.failure("We're sorry, but you've reached the end of search results.");
 }
-
 
